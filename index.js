@@ -17,15 +17,17 @@ log4js.configure({
 });
 
 express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .use(log4js.connectLogger(log4js.getLogger('web')))
-  .use(bodyParser.urlencoded({
-    limit: '50mb',
-    extended:true,
-  }))
-  .use(bodyParser.json())
-  .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
-  .get('/', (req, res) => res.render('pages/index'))
-  .post('/stamp', stamp)
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+    .use(express.static(path.join(__dirname, 'public')))
+    .use(log4js.connectLogger(log4js.getLogger('web')))
+    .use(bodyParser.urlencoded({
+        limit: '50mb',
+        extended:true,
+    }))
+    .use(bodyParser.json({
+        limit:'50mb',
+    }))
+    .set('views', path.join(__dirname, 'views'))
+    .set('view engine', 'ejs')
+    .get('/', (req, res) => res.render('pages/index'))
+    .post('/stamp', stamp)
+    .listen(PORT, () => console.log(`Listening on ${ PORT }`));
