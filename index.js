@@ -19,7 +19,10 @@ log4js.configure({
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(log4js.connectLogger(log4js.getLogger('web')))
-  .use(bodyParser.urlencoded({extended:true}))
+  .use(bodyParser.urlencoded({
+    limit: '10mb',
+    extended:true,
+  }))
   .use(bodyParser.json())
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
