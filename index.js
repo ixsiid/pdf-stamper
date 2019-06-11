@@ -20,7 +20,7 @@ express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(log4js.connectLogger(log4js.getLogger('web')))
   .use(bodyParser.urlencoded({
-    limit: '10mb',
+    limit: '50mb',
     extended:true,
   }))
   .use(bodyParser.json())
