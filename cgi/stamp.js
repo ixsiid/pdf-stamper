@@ -3,7 +3,7 @@ const childProcess = require('child_process');
 
 module.exports = function (req, res) {
 	const approved = childProcess.execSync('python ./cgi/add_text.py', {
-		input: Buffer.from(req.body.pdf, 'base64'),
+		input: Buffer.from(req.body.pdf['$content'], 'base64'),
 	});
 
 	const result = { version };
