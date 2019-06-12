@@ -75,3 +75,6 @@ Dockerfile
 docker-compose.yml
 
 *.log
+
+.venv
+object
