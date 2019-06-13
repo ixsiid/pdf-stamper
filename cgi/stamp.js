@@ -10,7 +10,7 @@ module.exports = function (req, res) {
 
 	const result = { version };
 	result.success = true;
-	result.approved = approved.toString('base64');
+	result.approved = "data:application/pdf;base64," + approved.toString('base64');
 	result.message = `Your name is ${req.body.author}`;
 	res.json(result);
 };
