@@ -6,6 +6,10 @@ name = "No name"
 if len(sys.argv) > 1:
     name = sys.argv[1]
 
+_y = 2
+if len(sys.argv) > 2:
+    _y = sys.argv[2]
+
 import PyPDF2
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import io
@@ -20,9 +24,12 @@ pdfmetrics.registerFont(TTFont(fontname, './cgi/ipaexg.ttf'))
 
 packet = io.BytesIO()
 
+x = 3 * cm
+y = (3 + 1.6 * int(_y)) * cm
+
 sign = canvas.Canvas(packet, pagesize=A4)
 sign.setFont(fontname, 16)
-sign.drawString(10*cm, 10*cm, name)
+sign.drawString(x, y, name)
 sign.save()
 
 packet.seek(0)
