@@ -6,6 +6,7 @@ name = "No name"
 if len(sys.argv) > 1:
     name = sys.argv[1]
 
+import PyPDF2
 from PyPDF2 import PdfFileWriter, PdfFileReader
 import io
 from reportlab.pdfgen import canvas
@@ -26,7 +27,10 @@ sign.save()
 
 packet.seek(0)
 new_pdf = PdfFileReader(packet)
-existing_pdf = PdfFileReader(sys.stdin.buffer)
+
+base_stream = io.BytesIO(sys.stdin.buffer.read())
+existing_pdf = PdfFileReader(base_stream, strict=False)
+
 output = PdfFileWriter()
 
 for i in range(existing_pdf.numPages):
@@ -34,5 +38,9 @@ for i in range(existing_pdf.numPages):
     page.mergePage(new_pdf.getPage(0))
     output.addPage(page)
 
-output.write(sys.stdout.buffer)
+write_stream = io.BytesIO()
+output.write(write_stream)
+
+write_stream.seek(0)
+sys.stdout.buffer.write(write_stream.getbuffer())
 
