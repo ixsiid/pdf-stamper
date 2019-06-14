@@ -8,6 +8,7 @@
                 '$content-type': file.type,
                 '$content': reader.result.substr(reader.result.indexOf(',') + 1),
             };
+            data.place = document.querySelector("input[type='number']").value;
 
             fetch('http://localhost:5000/stamp', {
                 method: "POST",
@@ -30,6 +31,7 @@
 <body>
     <p>
         <input type="file" name="file" />
+        <input type="number" name="place" value="1" step="1" />
         <input type="button" name="upload" value="Upload" onclick="proc()" />
     </p>
 </body>
