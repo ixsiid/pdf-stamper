@@ -7,7 +7,7 @@ module.exports = function (req, res) {
 	const sign = date.toISOString().substring(0, 10) + "\n" + req.body.author;
 	const args = ['./cgi/add_text.py', sign, '-x 10', `-y ${29.5 + req.body.place * 10.5}`, '-p 8'];
 	const approved = childProcess.spawnSync('python', args, {
-		input: Buffer.from(req.body.pdf['$content'], 'base64'),
+		input: Buffer.from(req.body.pdf['$content'] || req.body.pdf, 'base64'),
 		stdio: ['pipe', 'pipe', 'inherit'],
 		maxBuffer: 50 * 1024 * 1024,
 	});
