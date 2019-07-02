@@ -2,6 +2,8 @@ const version = require('../version.json').datetime;
 const childProcess = require('child_process');
 
 module.exports = function (req, res) {
+	global.memory_release();
+	
 	const date = new Date();
 	date.setHours(date.getHours() + 9);
 	const sign = date.toISOString().substring(0, 10) + "\n" + req.body.author;

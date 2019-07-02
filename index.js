@@ -1,10 +1,11 @@
 const express = require('express')
 const path = require('path')
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5001
 const log4js = require('log4js');
 const stamp = require('./cgi/stamp');
 const card = require('./cgi/card');
 const bodyParser = require('body-parser');
+const GC_AMOUNT = 150 * 1000 * 1000;
 
 log4js.configure({
     appenders: {
@@ -16,6 +17,14 @@ log4js.configure({
         web: { appenders: ['access'], level: 'info' },
     },
 });
+
+global.memory_limit = GC_AMOUNT;
+global.memory_release = () => {
+    if (process.memoryUsage().heapUsed > global.memory_limit) {
+        global.gc();
+        console.log(`Run garbage collection: memory usage ${process.memoryUsage().heapUsed}`);
+    }
+}
 
 express()
     .use(express.static(path.join(__dirname, 'public')))
