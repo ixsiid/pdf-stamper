@@ -18,6 +18,7 @@ parser.add_argument('-p', metavar='FONT SIZE', type=float, default=16.0,
 
 args = parser.parse_args()
 
+del parser
 
 import sys
 
@@ -28,6 +29,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+import gc
 
 fontname = "IPA Gothic"
 pdfmetrics.registerFont(TTFont(fontname, './cgi/ipaexg.ttf'))
@@ -54,11 +56,22 @@ for i in range(existing_pdf.numPages):
     sign.drawText(texts)
     sign.save()
 
+    del sign
+    del texts
+    gc.collect()
+
     packet.seek(0)
     new_pdf = PdfFileReader(packet)
 
     page.mergePage(new_pdf.getPage(0))
+    del new_pdf
+    del packet
+    gc.collect()
+
     output.addPage(page)
+
+    del page
+    gc.collect()
 
 write_stream = io.BytesIO()
 output.write(write_stream)

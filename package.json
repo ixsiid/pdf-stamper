@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "node test.js",
-    "debug": "node .\\node_modules\\nodemon\\bin\\nodemon.js index.js"
+    "server": "node --expose-gc .\\node_modules\\nodemon\\bin\\nodemon.js index.js"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
