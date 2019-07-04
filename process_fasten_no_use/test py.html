@@ -1,0 +1,41 @@
+<html>
+<script>
+    function proc() {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const data = {
+                text: "2019-05-05\n田中　達郎",
+                x: 12.5,
+                y: 32.2,
+                size: 10.5,
+            };
+            data.pdf = reader.result.substr(reader.result.indexOf(',') + 1);
+            
+            fetch('/stamp', {
+                method: "POST",
+                mode: "cors",
+                cache: "no-cache",
+                headers: new Headers({
+                    "Content-Type": "application/json; charset=utf-8",
+                }),
+                body: JSON.stringify(data),
+            }).then(res => res.json())
+                .then(console.log)
+                .catch(console.error);
+        };
+
+        const file = document.querySelector("input[type='file']").files[0];
+        reader.readAsDataURL(file);
+    }
+</script>
+
+<body>
+    <p>
+        <input type="file" name="file" />
+        <input type="text" name="author" value="田中　太郎" />
+        <input type="number" name="place" value="1" step="1" />
+        <input type="button" name="upload" value="Upload" onclick="proc()" />
+    </p>
+</body>
+
+</html>
