@@ -38,7 +38,7 @@ module.exports = function (req, res) {
 			'Content-Type': 'application/json'
 		};
 		fetch(req.body.webhook, { method: 'POST', headers, body })
-			.then(console.log)
+			.then(() => console.log('Stamped pdf is finish to send'))
 			.catch(console.error);
 	});
 	p.stdin.write(write_buffer);
