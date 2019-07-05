@@ -28,12 +28,12 @@ module.exports = function (req, res) {
 			console.log('Error');
 			return;
 		}
-		const body = {
+		const body = JSON.stringify({
 			name: 'Drawings Approval',
 			success: true,
 			parameter: req.body.parameter,
 			pdf: p.approved.toString('base64'),
-		};
+		});
 		const headers = {
 			'Content-Type': 'application/json'
 		};
