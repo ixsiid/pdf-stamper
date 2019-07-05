@@ -1,0 +1,37 @@
+<html>
+<script>
+    function proc() {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const data = { author: "田中　太郎" };
+            data.pdf = reader.result.substr(reader.result.indexOf(',') + 1);
+            data.place = document.querySelector("input[type='number']").value;
+            data.webhook = 'https://prod-01.japaneast.logic.azure.com:443/workflows/6f0f57a22d4d46e4b42fee205325451c/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=u022eeGCVewc0rDTKbVzH2waWeprM8yzXfPJpdVQv78';
+
+            fetch('/stamp_cb', {
+                method: "POST",
+                mode: "cors",
+                cache: "no-cache",
+                headers: new Headers({
+                    "Content-Type": "application/json; charset=utf-8",
+                }),
+                body: JSON.stringify(data),
+            }).then(res => res.json())
+                .then(console.log)
+                .catch(console.error);
+        };
+
+        const file = document.querySelector("input[type='file']").files[0];
+        reader.readAsDataURL(file);
+    }
+</script>
+
+<body>
+    <p>
+        <input type="file" name="file" />
+        <input type="number" name="place" value="1" step="1" />
+        <input type="button" name="upload" value="Upload" onclick="proc()" />
+    </p>
+</body>
+
+</html>

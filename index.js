@@ -1,8 +1,9 @@
-const express = require('express')
-const path = require('path')
-const PORT = process.env.PORT || 5001
+const express = require('express');
+const path = require('path');
+const PORT = process.env.PORT || 5001;
 const log4js = require('log4js');
 const stamp = require('./cgi/stamp');
+const stamp_cb = require('./cgi/stamp_callback');
 const card = require('./cgi/card');
 const bodyParser = require('body-parser');
 const GC_AMOUNT = 150 * 1000 * 1000;
@@ -40,5 +41,6 @@ express()
     .set('view engine', 'ejs')
     .get('/', (req, res) => res.render('pages/index'))
     .post('/stamp', stamp)
+    .post('/stamp_cb', stamp_cb)
     .post('/card', card)
     .listen(PORT, () => console.log(`Listening on ${PORT}`));
