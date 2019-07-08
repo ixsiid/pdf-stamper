@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 
 module.exports = function (req, res) {
 	global.memory_release();
-	
+
 	const date = new Date();
 	date.setHours(date.getHours() + 9);
 	const sign = date.toISOString().substring(0, 10) + "\n" + req.body.author;
@@ -23,23 +23,29 @@ module.exports = function (req, res) {
 		console.log(data);
 	});
 	p.on('close', code => {
+		const method = 'POST';
+		const headers = { 'Content-Type': 'application/json' };
+		const body = {
+			name: 'Drawings Approval',
+			parameter: req.body.parameter,
+		};
+
 		if (code !== 0) {
 			// エラー通知
 			console.log('Error');
+			body.success = false;
+			body.pdf = '';
+			fetch(req.body.webhook, { method, headers, body: JSON.stringify(body) })
+				.then(() => console.log('Error result is sended'))
+				.catch(console.error);
 			return;
+		} else {
+			body.success = true;
+			body.pdf = p.approved.toString('base64');
+			fetch(req.body.webhook, { method, headers, body: JSON.stringify(body) })
+				.then(() => console.log('Stamped pdf is finish to send'))
+				.catch(console.error);
 		}
-		const body = JSON.stringify({
-			name: 'Drawings Approval',
-			success: true,
-			parameter: req.body.parameter,
-			pdf: p.approved.toString('base64'),
-		});
-		const headers = {
-			'Content-Type': 'application/json'
-		};
-		fetch(req.body.webhook, { method: 'POST', headers, body })
-			.then(console.log)
-			.catch(console.error);
 	});
 	p.stdin.write(write_buffer);
 	p.stdin.end()
